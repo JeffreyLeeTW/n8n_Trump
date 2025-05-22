@@ -1,0 +1,223 @@
+{
+  "name": "n8n_Trump_1.0.0",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "feedUrl": "https://trumpstruth.org/feed"
+      },
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "b3c0ba19-3c45-4b4d-833a-556d42638c23",
+      "name": "RSS Feed Trigger"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "10a6449d-2eeb-493d-9ade-1743a3cd3164",
+      "name": "RSS fetch html"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "",
+          "__regex": "https:\\/\\/discord.com\\/channels\\/([0-9]+)"
+        },
+        "channelId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "",
+          "__regex": "https:\\/\\/discord.com\\/channels\\/[0-9]+\\/([0-9]+)"
+        },
+        "content": "",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "=# American Time\n{{ $('RSS Feed Trigger').item.json.pubDate }}\n# Content\n{{ $json.Html_content }}\n# [Link]({{ $json.TruthSocial }})",
+              "author": "Donald J. Trump",
+              "color": "#09268F",
+              "timestamp": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1580,
+        -80
+      ],
+      "id": "acde3ec4-61eb-4a8b-9c2a-32b5b449f43a",
+      "name": "Discord",
+      "webhookId": "ea1eea0b-9c02-4c75-bf51-3c78173cf443",
+      "credentials": {
+        "discordBotApi": {
+          "id": "sFXl5a8GWTgnplqT",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "Html_content",
+              "cssSelector": ".status__content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        0
+      ],
+      "id": "16a32eb3-45c2-49ac-9edc-6d907bd4d330",
+      "name": "HTML extract text"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "TruthSocial",
+              "cssSelector": "td.status-details-table__value a[href^=\"https://truthsocial.com/\"]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        440,
+        -160
+      ],
+      "id": "86150d5e-364c-4a53-9d4e-481fea66f983",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "79ff746e-9f5d-4142-85c2-080e554283d5",
+      "name": "Merge"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Feed Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS fetch html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS fetch html": {
+      "main": [
+        [
+          {
+            "node": "HTML extract text",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML extract text": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "41ea469f-a13b-4419-83d6-71e758f19a32",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5496a4187f657db34a176476f23b354260aa22dc4110f6cf22190f8eae93a808"
+  },
+  "id": "2uzV7uaVOcr9obQT",
+  "tags": [
+    {
+      "createdAt": "2025-05-17T09:23:27.804Z",
+      "updatedAt": "2025-05-17T09:23:27.804Z",
+      "id": "O0uE6EqY7Hei4j4z",
+      "name": "v1.0.0"
+    }
+  ]
+}
