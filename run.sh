@@ -1,6 +1,9 @@
 #!/bin/bash
 timestamp=$(date "+%Y_%m_%d_%H_%M_%S")
 
+# 建立 logs 資料夾（若不存在）
+mkdir -p ./logs
+
 # 取得目前時間作為 log 檔案名稱
 logfile="./logs/$timestamp.log"
 
