@@ -1,5 +1,5 @@
 {
-  "name": "n8n_Trump_1.0.0",
+  "name": "n8n_Trump2.0.0",
   "nodes": [
     {
       "parameters": {
@@ -15,10 +15,10 @@
       "type": "n8n-nodes-base.rssFeedReadTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        -208,
+        144
       ],
-      "id": "b3c0ba19-3c45-4b4d-833a-556d42638c23",
+      "id": "5d5f2fe9-9729-41e2-9fe7-ed6242f8800a",
       "name": "RSS Feed Trigger"
     },
     {
@@ -29,10 +29,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        220,
-        0
+        16,
+        144
       ],
-      "id": "10a6449d-2eeb-493d-9ade-1743a3cd3164",
+      "id": "757627b5-df2d-46c6-8423-04c1e6d74d9d",
       "name": "RSS fetch html"
     },
     {
@@ -40,22 +40,19 @@
         "resource": "message",
         "guildId": {
           "__rl": true,
-          "mode": "url",
-          "value": "",
-          "__regex": "https:\\/\\/discord.com\\/channels\\/([0-9]+)"
+          "value": "752825289683370024",
+          "mode": "id"
         },
         "channelId": {
           "__rl": true,
-          "mode": "url",
-          "value": "",
-          "__regex": "https:\\/\\/discord.com\\/channels\\/[0-9]+\\/([0-9]+)"
+          "value": "1359858126727282689",
+          "mode": "id"
         },
-        "content": "",
         "options": {},
         "embeds": {
           "values": [
             {
-              "description": "=# American Time\n{{ $('RSS Feed Trigger').item.json.pubDate }}\n# Content\n{{ $json.Html_content }}\n# [Link]({{ $json.TruthSocial }})",
+              "description": "=# American Time\n{{ $('RSS Feed Trigger').item.json.pubDate }}\n# Content\n{{ $json.content.parts[0].text }}\n# [Link]({{ $json.TruthSocial }})",
               "author": "Donald J. Trump",
               "color": "#09268F",
               "timestamp": "={{ $now }}"
@@ -66,15 +63,15 @@
       "type": "n8n-nodes-base.discord",
       "typeVersion": 2,
       "position": [
-        1580,
-        -80
+        1200,
+        0
       ],
-      "id": "acde3ec4-61eb-4a8b-9c2a-32b5b449f43a",
+      "id": "e6ffa5db-7747-4fc7-ae6d-3a1e6799685a",
       "name": "Discord",
       "webhookId": "ea1eea0b-9c02-4c75-bf51-3c78173cf443",
       "credentials": {
         "discordBotApi": {
-          "id": "sFXl5a8GWTgnplqT",
+          "id": "ajEAEo9AVic7CJ4X",
           "name": "Discord Bot account"
         }
       }
@@ -95,10 +92,10 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        440,
-        0
+        240,
+        144
       ],
-      "id": "16a32eb3-45c2-49ac-9edc-6d907bd4d330",
+      "id": "139593b2-7766-4d9d-900d-6b1cf908ad0b",
       "name": "HTML extract text"
     },
     {
@@ -117,10 +114,10 @@
       "type": "n8n-nodes-base.html",
       "typeVersion": 1.2,
       "position": [
-        440,
-        -160
+        240,
+        -16
       ],
-      "id": "86150d5e-364c-4a53-9d4e-481fea66f983",
+      "id": "767f377a-4282-4aea-953e-90d7b702a533",
       "name": "HTML"
     },
     {
@@ -132,11 +129,43 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.1,
       "position": [
-        1280,
-        -80
+        896,
+        0
       ],
-      "id": "79ff746e-9f5d-4142-85c2-080e554283d5",
+      "id": "9ce82020-7e9a-45ec-a266-dbac88cc9bd2",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=請將以下英文內容翻譯成繁體中文，確保語句通順、符合繁體中文的習慣用語，並保留原文的語氣和上下文意涵。請避免直譯，適當調整語序和表達方式以符合繁體中文的自然語感。如果有專有名詞或術語，請保留原文並在括號中註明，或根據上下文提供適當的繁體中文翻譯。以下是待翻譯的內容：[插入英文內容]\n{{ $('RSS Feed Trigger').item.json.title }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        512,
+        304
+      ],
+      "id": "b99d2e39-bdc9-4c52-a667-9781e1b4c807",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "kEOguHjbWX7CsPco",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -172,9 +201,9 @@
       "main": [
         [
           {
-            "node": "Merge",
+            "node": "Message a model",
             "type": "main",
-            "index": 1
+            "index": 0
           }
         ]
       ]
@@ -200,23 +229,34 @@
           }
         ]
       ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "41ea469f-a13b-4419-83d6-71e758f19a32",
+  "versionId": "862a95ff-98d8-4de3-8068-531b47787708",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "5496a4187f657db34a176476f23b354260aa22dc4110f6cf22190f8eae93a808"
+    "instanceId": "e40a04b542f9d003ddb8fe041ef6a8c6558ded4e3477415c0d61c067857718a9"
   },
-  "id": "2uzV7uaVOcr9obQT",
+  "id": "y89ye3J7rzn0i8CY",
   "tags": [
     {
-      "createdAt": "2025-05-17T09:23:27.804Z",
-      "updatedAt": "2025-05-17T09:23:27.804Z",
-      "id": "O0uE6EqY7Hei4j4z",
+      "createdAt": "2025-09-01T15:42:03.635Z",
+      "updatedAt": "2025-09-01T15:42:03.635Z",
+      "id": "99E5fI68EZQl45eh",
       "name": "v1.0.0"
     }
   ]
