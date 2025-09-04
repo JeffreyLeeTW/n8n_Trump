@@ -1,5 +1,5 @@
 {
-  "name": "n8n_Trump2.0.0",
+  "name": "n8n_Trump2.1.0",
   "nodes": [
     {
       "parameters": {
@@ -155,8 +155,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        512,
-        304
+        496,
+        144
       ],
       "id": "b99d2e39-bdc9-4c52-a667-9781e1b4c807",
       "name": "Message a model",
@@ -246,7 +246,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "862a95ff-98d8-4de3-8068-531b47787708",
+  "versionId": "07864443-f3f8-427b-bc8d-5e8dfca8e3c1",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "e40a04b542f9d003ddb8fe041ef6a8c6558ded4e3477415c0d61c067857718a9"
